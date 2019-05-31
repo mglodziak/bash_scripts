@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Skrypt rozpakowujacy roznorodne archiwa...
+
 if [ -f "$1" ]; then
 	echo "Initializing"
 
