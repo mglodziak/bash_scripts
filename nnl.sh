@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Skrypt wyswietla numer co n-tej linii w pliku, gdzie n to parametr
+
 function print_help {
 
         echo "Info"
