@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Skrypt do pakowania katalogów z zadanym rozszerzeniem i sciezka
 
 function print_help {
 
