@@ -1,0 +1,88 @@
+#/bin/bash
+
+function create_archive {
+
+folder=$1
+current_date=$2
+full_path=$3
+
+backup_dir=$HOME/Pulpit/backups
+end_file=_${current_date}.tar.gz
+
+
+ echo -e "\nfolder: $folder"
+ echo "current_date: $current_date"
+ echo "full_path: $full_path"
+ echo "backup_dir: $backup_dir"
+ echo "end_file:= $end_file"
+
+
+file_exist=`ls $backup_dir | grep $end_file`
+
+if [ -z $file_exist ]; then
+	echo "The file doesn't exist. Creating the archive..."
+	cd ${full_path}
+ 	tar cfz ${backup_dir}/${end_file} *
+
+else 
+	printf  "The file exists, do you want to owerwrite it? [y/n]"
+
+	read confirm
+
+	if [ "$confirm" == "y" ]; then
+		echo "Owerwriting..."
+		cd ${full_path}
+        	tar cfz ${backup_dir}/${end_file} *
+
+	elif [ "$confirm" == "n" ]; then
+		echo "Quitting"
+	else 
+		echo "Quitting"
+	fi
+fi
+
+
+
+
+}
+
+function print_help {
+
+	echo "Info"
+	printf "Creates a tar.gz archive of <directory> in $HOME/Pulpit/backups "
+	printf "appending the current date to the filename\n"
+
+ 	echo "Usage:"
+	echo "./backupit.sh <directory>"
+}
+
+
+
+
+
+if [ -d "$1" ]; then
+	
+	folder=$1
+	full_path=`readlink -f $1`
+	current_date=`date +"%Y%m%d_%H%M"`
+	
+
+	if [ ! -d "$HOME/Pulpit/backups" ]; then
+		echo "$HOME/Pulpit/backups directory doesn't extist. Creating it..."
+	
+		mkdir $HOME/Pulpit/backups
+	fi
+	
+
+
+
+	echo "Compressing $full_path into archive $HOME/Pulpit/backups/${folder}_${current_date}.tar.gz..."
+	create_archive $folder $current_date $full_path
+
+
+elif [ -z "$1" ]; then
+	print_help
+else 
+	echo -e "Not a directory\n"
+	print_help
+fi
